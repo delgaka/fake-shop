@@ -42,7 +42,7 @@ kind: Deployment
 metadata:
   name: fakeshop
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: fakeshop
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: fakeshop
-          image: delgaka/fakeshop:v1
+          image: delgaka/fake-shop:v1
           ports:
             - containerPort: 5000
           env:
@@ -80,4 +80,17 @@ spec:
   ports:
     - port: 80
       targetPort: 5000
-  type: LoadBalancer
+      nodePort: 30000
+  type: NodePort
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: fakeshop
+#spec:
+#  selector:
+#    app: fakeshop
+#  ports:
+#    - port: 80
+#      targetPort: 5000
+#  type: LoadBalancer
