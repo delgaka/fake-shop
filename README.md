@@ -11,6 +11,8 @@ Run local ele baixa.
 Repo: delgaka/fakeshop:v1
 
 Já está público. Não sei mais o que fazer.
+Resolvido: ajustando o build da imagem
+docker buildx build --platform linux/amd64,linux/arm64 -t login/image:tag --push .
 
 
 ## Variável de Ambiente

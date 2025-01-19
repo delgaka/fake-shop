@@ -42,7 +42,7 @@ kind: Deployment
 metadata:
   name: fakeshop
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: fakeshop
@@ -51,9 +51,12 @@ spec:
       labels:
         app: fakeshop
     spec:
+      # imagePullSecrets:
+      #   - name: my-docker-secret # Referência ao Secret criado
       containers:
         - name: fakeshop
           image: delgaka/fake-shop:v1
+          imagePullPolicy: Always # Garante que o Kubernetes sempre buscará a imagem do repositório
           ports:
             - containerPort: 5000
           env:
@@ -70,6 +73,20 @@ spec:
             - name: FLASK_APP
               value: index.py
 ---
+# versão para k3d bind na 30000 - criando o cluster -p 8080:30000@loadbalancer
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: fakeshop
+# spec:
+#   selector:
+#     app: fakeshop
+#   ports:
+#     - port: 80
+#       targetPort: 5000
+#       nodePort: 30000
+#   type: NodePort
+# ---
 apiVersion: v1
 kind: Service
 metadata:
@@ -80,17 +97,4 @@ spec:
   ports:
     - port: 80
       targetPort: 5000
-      nodePort: 30000
-  type: NodePort
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: fakeshop
-#spec:
-#  selector:
-#    app: fakeshop
-#  ports:
-#    - port: 80
-#      targetPort: 5000
-#  type: LoadBalancer
+  type: LoadBalancer
