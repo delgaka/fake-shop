@@ -17,6 +17,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set up QEMU (para suportar multiplataforma)
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+      
+      - name: Set up Docker Buildx (para habilitar driver multiplataforma)
+        uses: docker/setup-buildx-action@v2
+      
       - name: Contrução e Envio da Imagem Docker
         uses: docker/build-push-action@v6
         with:
