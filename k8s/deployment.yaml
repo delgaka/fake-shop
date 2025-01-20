@@ -56,7 +56,7 @@ spec:
       containers:
         - name: fakeshop
           image: delgaka/fake-shop:v1
-          imagePullPolicy: Always # Garante que o Kubernetes sempre buscará a imagem do repositório
+          # imagePullPolicy: Always # Garante que o Kubernetes sempre buscará a imagem do repositório
           ports:
             - containerPort: 5000
           env:
