@@ -42,6 +42,11 @@ jobs:
   cd:
     runs-on: ubuntu-latest
     needs: [ci]
+    # permissões necessárias para o action kubernet https://github.com/marketplace/actions/deploy-to-kubernetes-cluster
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
     steps:
       - name: Recuperar o código do projeto
         uses: actions/checkout@v4
@@ -57,4 +62,9 @@ jobs:
         run: aws eks update-kubeconfig --name aula-eks
 
       - name: Deploy dos manifestos no Kubernets
-        run: echo "Executando o comando Docker kubectl"
+        uses: Azure/k8s-deploy@v5
+        with:
+          manifests: |
+              ./k8s/deployment.yaml
+          images: |
+              delgaka/fake-shop:v${{ github.run_number }}
